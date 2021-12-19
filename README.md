@@ -1,6 +1,6 @@
 # BlockTimer4BTC
 
-## Samary
+## Summary
 Bitcoinのマイナーによるブロック生成時間を出力します。  
 blockchain.com　参照
 
