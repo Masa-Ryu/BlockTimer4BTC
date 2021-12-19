@@ -1,5 +1,6 @@
 # BlockTimer4BTC
 
+## Samary
 Bitcoinのマイナーによるブロック生成時間を出力します。  
 blockchain.com　参照
 
@@ -10,3 +11,6 @@ blockchain.com　参照
 根拠は下の記事、動画で解説してあります。　　
 
 https://www.cocosta.jp/2019/bitcoin-measuring-sellingpressure/
+
+## How's it work?
+Use cron with 1work/min.
