@@ -129,9 +129,8 @@ dmypy.json
 .pyre/
 
 # Additional
-.json
+*.json
 .idea
 .idea/
 main.py
 discord.py
-.pkle

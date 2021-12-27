@@ -6,7 +6,7 @@ import requests
 
 
 class BlockTimer:
-    def __int__(self):
+    def __init__(self):
         self.urls = {
             'latestblock': 'https://blockchain.info/latestblock',
             'difficulty': 'https://blockchain.info/q/getdifficulty',
