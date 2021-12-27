@@ -134,3 +134,4 @@ dmypy.json
 .idea/
 main.py
 discord.py
+.pkle
