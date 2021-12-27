@@ -4,6 +4,7 @@ from time import time
 
 import requests
 
+
 class BlockTimer:
     def __int__(self):
         self.urls = {
@@ -51,13 +52,19 @@ class BlockTimer:
         now_data = self.fetch(self.urls['latestblock'])
         now_difficulty = self.fetch(self.urls['difficulty'])
         past_data = self.read()
+        caution = None
         if not now_data['height'] == past_data['height']:
             def_time = round((now_data['time'] - past_data['time']) / 60)
-            now_time = datetime.fromtimestamp(time(), timezone(timedelta(hours=+9), 'JST')).strftime(
+            now_time = datetime.fromtimestamp(
+                time(), timezone(
+                    timedelta(hours=+9), 'JST'
+                    )
+                ).strftime(
                 '%Y-%m-%d %H:%M'
                 )
             if def_time > 60:
                 evaluation = '⏳' * 3
+                caution = '@everyone CAUTION!'
             elif 60 >= def_time >= 45:
                 evaluation = '⏳' * 2
             elif 45 > def_time >= 30:
@@ -65,13 +72,19 @@ class BlockTimer:
             else:
                 evaluation = ''
 
-            msg = f'{now_time} ■{now_data["height"]}  生成時間: {def_time}分 {evaluation}'
-            print(msg)
+            msg = f'{now_time} 生成時間: {def_time}分 {evaluation}'
+        else:
+            msg = None
 
         past_difficulty = past_data['difficulty']
         if not past_difficulty == now_difficulty:
-            msg = f'@everyone 難易度変更: {past_difficulty} -> {now_difficulty}'
-            print(msg)
+            if past_difficulty < now_difficulty:
+                result = 'UP'
+            else:
+                result = 'DOWN'
+            difficulty = f'@everyone 難易度変更({result}): {past_difficulty} -> {now_difficulty}'
+        else:
+            difficulty = None
 
         data = {
             'time': now_data['time'],
@@ -79,3 +92,4 @@ class BlockTimer:
             'difficulty': now_difficulty
             }
         self.write(data)
+        return msg, caution, difficulty
