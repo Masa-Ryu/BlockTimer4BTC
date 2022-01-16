@@ -8,42 +8,45 @@ import requests
 class BlockTimer:
     def __init__(self):
         self.urls = {
-            'latestblock': 'https://blockchain.info/latestblock',
-            'difficulty': 'https://blockchain.info/q/getdifficulty',
-            'blockcount': 'https://blockchain.info/q/getblockcount',
-            'latesthash': 'https://blockchain.info/q/latesthash',
-            'bcperblock': 'https://blockchain.info/q/bcperblock',
-            'totalbc': 'https://blockchain.info/q/totalbc',
-            'probability': 'https://blockchain.info/q/probability',
-            'hashestowin': 'https://blockchain.info/q/hashestowin',
-            'nextretarget': 'https://blockchain.info/q/nextretarget',
-            'avgtxsize': 'https://blockchain.info/q/avgtxsize',
-            'avgtxvalue': 'https://blockchain.info/q/avgtxvalue',
-            'interval': 'https://blockchain.info/q/interval',
-            'eta': 'https://blockchain.info/q/eta',
-            'avgtxnumber': 'https://blockchain.info/q/avgtxnumber'
-            }
+                'latestblock':  'https://blockchain.info/latestblock',
+                'difficulty':   'https://blockchain.info/q/getdifficulty',
+                'blockcount':   'https://blockchain.info/q/getblockcount',
+                'latesthash':   'https://blockchain.info/q/latesthash',
+                'bcperblock':   'https://blockchain.info/q/bcperblock',
+                'totalbc':      'https://blockchain.info/q/totalbc',
+                'probability':  'https://blockchain.info/q/probability',
+                'hashestowin':  'https://blockchain.info/q/hashestowin',
+                'nextretarget': 'https://blockchain.info/q/nextretarget',
+                'avgtxsize':    'https://blockchain.info/q/avgtxsize',
+                'avgtxvalue':   'https://blockchain.info/q/avgtxvalue',
+                'interval':     'https://blockchain.info/q/interval',
+                'eta':          'https://blockchain.info/q/eta',
+                'avgtxnumber':  'https://blockchain.info/q/avgtxnumber'
+                }
 
     def initialize(self):
         now_data = self.fetch(self.urls['latestblock'])
         now_difficulty = self.fetch(self.urls['difficulty'])
         data = {
-            'time': now_data['time'],
-            'height': now_data['height'],
-            'difficulty': now_difficulty
-            }
+                'time':       now_data['time'],
+                'height':     now_data['height'],
+                'difficulty': now_difficulty
+                }
         self.write(data)
 
-    def fetch(self, url):
+    @staticmethod
+    def fetch(url):
         res = requests.get(url)
         res = res.json()
         return res
 
-    def write(self, data):
+    @staticmethod
+    def write(data):
         with open("BlockTimer.json", mode="wt", encoding="utf-8") as file:
             json.dump(data, file, ensure_ascii=False, indent=2)
 
-    def read(self):
+    @staticmethod
+    def read():
         with open("BlockTimer.json", mode="r", encoding="utf-8") as file:
             data = json.load(file)
         return data
@@ -56,12 +59,12 @@ class BlockTimer:
         if not now_data['height'] == past_data['height']:
             def_time = round((now_data['time'] - past_data['time']) / 60)
             now_time = datetime.fromtimestamp(
-                time(), timezone(
-                    timedelta(hours=+9), 'JST'
+                    time(), timezone(
+                            timedelta(hours=+9), 'JST'
+                            )
+                    ).strftime(
+                    '%Y-%m-%d %H:%M'
                     )
-                ).strftime(
-                '%Y-%m-%d %H:%M'
-                )
             if def_time > 60:
                 evaluation = '⏳' * 3
                 caution = '@everyone CAUTION!'
@@ -87,9 +90,9 @@ class BlockTimer:
             difficulty = None
 
         data = {
-            'time': now_data['time'],
-            'height': now_data['height'],
-            'difficulty': now_difficulty
-            }
+                'time':       now_data['time'],
+                'height':     now_data['height'],
+                'difficulty': now_difficulty
+                }
         self.write(data)
         return msg, caution, difficulty
